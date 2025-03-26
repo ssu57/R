@@ -1,0 +1,44 @@
+trees
+str(trees)
+dim(trees)
+is.na(trees)
+N_trees<-na.omit(trees)#omit 결측지 제거
+is.na(N_trees)
+dim(N_trees)
+hist(trees$Girth)
+hist(trees$Height)
+##줄기 잎 그림
+# 1. hist
+# 2. stem
+# 3. boxplot(여러데이터 동시 비교 이상치 확인)
+stem(trees$Girth)
+stem(trees$Height)
+stem(trees$Volume)
+boxplot(trees$Girth)
+boxplot(trees$Height)
+boxplot(trees$Volume)
+boxplot(trees)
+##correlation coefficient
+##상관관계
+cor(trees)
+plot(trees$Height, trees$Girth)
+plot(trees$Girth, trees$Volume)
+##linear Regression
+##1차 직선회귀모델
+fit<-lm(trees$Volume~trees$Girth, data = trees)
+##lm(y ~ x)
+abline(fit)
+summary(fit)
+predict(fit)
+fit2<-lm(trees$Volume~trees$Height, data = trees)
+
+plot(trees$Girth, trees$Height)
+
+##lm: 1차 회귀모델
+##summary: 1차 회귀 모델 성능 평가
+##predict: 예측값 출력
+library(psych)
+##skew(왜도, 기울기 정도)
+##skew>0 왼쪽 위로 산/skew=0 가운데데로 산/skew<0 오른른쪽 위로 산
+##kurtosis(첨도)
+##kurtosis>0 높게/kurtosis=0 중간kurtosis< 낮게
