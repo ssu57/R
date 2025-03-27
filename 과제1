@@ -53,4 +53,10 @@ S_Hitters<-kNN(airquality, k=3)
 summary(N_airquality)
 --------------------------------------------------------------------------------------------------------
 6)그 외 결측값 대체하는 방법을 알아보고 적용해 보아라.(apply()사용 코드작성)
-잘 모르겠다.
+df <- data.frame(
+  x = c(1, 2, NA, 4, 5, NA),
+  y = c(10, NA, 30, 40, NA, 60),
+  z = c(100, 200, 300, NA, 500, NA)
+)
+df <- data.frame(apply(df, 2, function(col) ifelse(is.na(col), mean(col, na.rm = TRUE), col)))
+print(df)
