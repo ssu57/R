@@ -1,0 +1,56 @@
+1) 데이터의 정보에 대해 정리하라(코드작성 및 결과 정리)
+help("airquality")
+
+New York Air Quality Measurements
+Description
+Daily air quality measurements in New York, May to September 1973.
+Format
+A data frame with 153 observations on 6 variables.
+Details
+Daily readings of the following air quality values for May 1, 1973 (a Tuesday) to September 30, 1973.
+Ozone: Mean ozone in parts per billion from 1300 to 1500 hours at Roosevelt Island
+Solar.R: Solar radiation in Langleys in the frequency band 4000–7700 Angstroms from 0800 to 1200 hours at Central Park
+Wind: Average wind speed in miles per hour at 0700 and 1000 hours at LaGuardia Airport
+Temp: Maximum daily temperature in degrees Fahrenheit at LaGuardia Airport.
+Examples
+Run examples
+require(graphics)
+pairs(airquality, panel = panel.smooth, main = "airquality data")
+--------------------------------------------------------------------------------------------------------
+2) 데이터의 변수이름과 자료형을 써라.(코드작성)
+str(airquality)
+
+'data.frame':	153 obs. of  6 variables:
+ $ Ozone  : int  41 36 12 18 NA 28 23 19 8 NA ...
+ $ Solar.R: int  190 118 149 313 NA NA 299 99 19 194 ...
+ $ Wind   : num  7.4 8 12.6 11.5 14.3 14.9 8.6 13.8 20.1 8.6 ...
+ $ Temp   : int  67 72 74 62 56 66 65 59 61 69 ...
+ $ Month  : int  5 5 5 5 5 5 5 5 5 5 ...
+ $ Day    : int  1 2 3 4 5 6 7 8 9 10 ...
+--------------------------------------------------------------------------------------------------------
+3) 결측값의 존재에 대해 변수별로 정리하고 그 개수를 확인하여라.(코드작성)
+sum(is.na(airquality$Ozone))
+##37
+sum(is.na(airquality$Solar.R))
+##7
+sum(is.na(airquality$Wind))
+##0
+sum(is.na(airquality$Temp))
+##0
+sum(is.na(airquality$Month))
+##0
+sum(is.na(airquality$Day))
+##0
+--------------------------------------------------------------------------------------------------------
+4) 결측치를 제거하고 데이터를 저장하여 기술통계량을 출력하라.(코드작성)
+N_airquality<-na.omit(airquality)
+is.na(N_airquality)
+summary(N_airquality)
+--------------------------------------------------------------------------------------------------------
+5)knn모델을 사용하여 k=3인 경우 결측값 대체 후 데이터를 저장하고 기술 통계량을 출력하라.(코드작성)
+library(VIM)
+S_Hitters<-kNN(airquality, k=3)
+summary(N_airquality)
+--------------------------------------------------------------------------------------------------------
+6)그 외 결측값 대체하는 방법을 알아보고 적용해 보아라.(apply()사용 코드작성)
+잘 모르겠다.
