@@ -74,7 +74,9 @@ arrange(mp_rank, mpg_rank)
 
 # 파이프 연산자를 사용하여 순위 기준으로 정렬하기
 mutate(mtcars, mpg_rank = rank(mpg)) %>% arrange(mpg_rank)
+mtcars_named<- rownames_to_column(mtcars,var = "carname")
 
-cyl_group<-group_by(mtcars,cyl)
-sorted_cars<-arrange(cyl_group,cyl,desc(hp)
+cyl_group1<-group_by(mtcars_named,cyl)
+sorted_cars<-arrange(cyl_group1,cyl,desc(hp))
 sorted_cars
+print(sorted_cars,n=32)
