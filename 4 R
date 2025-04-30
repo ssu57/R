@@ -1,0 +1,111 @@
+data(airquality)
+help("airquality")
+str(airquality)
+is.na(airquality)
+sum(is.na(airquality$Wind))
+sum(is.na(airquality$Temp))
+sum(is.na(airquality$Month))
+sum(is.na(airquality$Day))
+N_airquality<-na.omit(airquality)
+is.na(N_airquality)
+summary(N_airquality)
+library(VIM)
+S_Hitters<-kNN(airquality, k=3)
+summary(N_airquality)
+df <- as.data.frame(apply(airquality, 2,k=TRUE))
+print(df)
+help("apply")
+df <- data.frame(
+  x = c(1, 2, NA, 4, 5, NA),
+  y = c(10, NA, 30, 40, NA, 60),
+  z = c(100, 200, 300, NA, 500, NA)
+)
+df <- data.frame(apply(df, 2, function(col) ifelse(is.na(col), mean(col, na.rm = TRUE), col)))
+print(df)
+
+--------------------------------------------------------------------------------------------------------------------
+
+library(dplyr)
+library(tibble)
+head(mtcars)
+# mtcars 데이터 세트 구조 확인하기
+nrow(mtcars)
+str(mtcars)
+
+
+## 1.조건에 맞는 데이터 추출하기
+filter(mtcars, cyl == 4)
+
+
+# 두 가지 조건에 맞는 데이터를 필터링하기
+filter(mtcars, cyl >= 6 & mpg > 20)
+
+
+## 2.지정한 변수만 추출하기
+head(select(mtcars, am, gear))
+
+
+## 3.오름차순 정렬하기
+head(arrange(mtcars, wt))
+
+
+# 오름차순 정렬한 후 내림차순 정렬하기
+head(arrange(mtcars, mpg, desc(wt)))
+
+
+## 4.새로운 열 추가하기
+head(mutate(mtcars, years = "1974"))
+
+head(mutate(mtcars, mpg_rank = rank(mpg)))
+
+
+## 5.중복 값 제거하기
+distinct(mtcars, cyl)
+
+distinct(mtcars, gear)
+
+
+# 여러 개 열에서 중복 값 제거하기
+distinct(mtcars, cyl, gear)
+
+
+# 데이터 요약하기
+summarise(mtcars, cyl_mean = mean(cyl), cyl_min = min(cyl), cyl_max = max(cyl))
+
+summarise(mtcars, mean(cyl), min(cyl), max(cyl))
+
+
+## 6.그룹별로 요약하기
+gr_cyl <- group_by(mtcars, cyl)
+summarise(gr_cyl, n())
+
+gr_cyl <- group_by(mtcars, cyl)
+summarise(gr_cyl, n_distinct(gear))
+
+
+# 샘플 데이터 10개 추출하기
+sample_n(mtcars, 10)
+
+
+# 전체 데이터의 20%를 샘플로 추출하기
+sample_frac(mtcars, 0.2)
+
+
+# 파이프 연산자로 그룹별 요약하기
+group_by(mtcars, cyl) %>% summarise(n())
+
+
+# 파이프 연산자 없이 순위 기준으로 정렬하기
+mp_rank <- mutate(mtcars, mpg_rank = rank(mpg))
+arrange(mp_rank, mpg_rank)
+
+
+# 파이프 연산자를 사용하여 순위 기준으로 정렬하기
+mutate(mtcars, mpg_rank = rank(mpg)) %>% arrange(mpg_rank)
+
+mtcars_named<- rownames_to_column(mtcars,var = "carname")
+
+cyl_group1<-group_by(mtcars_named,cyl)
+sorted_cars<-arrange(cyl_group1,cyl,desc(hp))
+sorted_cars
+print(sorted_cars,n=32)
