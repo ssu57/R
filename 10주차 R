@@ -1,0 +1,53 @@
+##1. tree데이터의 변수간 상관관계를 분석하고 상관관계가 가장 높은 두 변수를 찾아라.
+plot(trees$Girth, trees$Height)
+fit<-lm(trees$Height~trees$Girth, data=trees)
+plot(trees$Girth~trees$Height)
+abline(fit)
+pairs(trees)
+cor(trees)
+cov(trees)
+cor.test(trees$Girth, trees$Height)##cor=0.967
+cor.test(trees$Girth, trees$Volume)##cor=0.519
+
+##2. 회귀분석의 정의와 목적에 대해 서술하고, 회귀 분석의 타당성 검토 항목을 쓰고 설명해라
+#회귀분석이란 하나 이상의 독립변수로부터 종속변수를 예측하는 방법이다.
+#1) 목적으론 종속 변수와 연관된 독립변수를 발견
+#2) 관련된 변수들의 관계의 형태를 서술
+#3) 독립 변수로부터 종속변수를 예측하는 방정식 제시
+#회귀분석의 타당성 검토에는 잔차의 선형성, 등분산성, 정규성, 독립성이 있다.
+
+##3. 종속변수가 정규분포를 이루지 않았을 때 선형성을 높이기 위해 사용하는 방법을 써라
+#데이터가 정규 분포가 아닐 때, log(), sqrt()로 종속변수를 변환시켜 선형으로 만든다.
+
+##4. cars 데이터에서 속도에 따른 거리에 대해 회귀분석 모형을 만드려고 한다. 거리의 정규성을 검정하고 log변환과 제곱근 변환을 각각 실시하여 모형을 비교 분석하라
+library(psych)
+describe(cars)
+#정규성 검정
+hist(cars$dist)
+qqnorm(cars$dist)
+qqline(cars$dist, col='red')
+shapiro.test(cars$dist)
+#로그변환
+plot(log(dist)~speed);fit2<-lm(log(dist)~speed);summary(fit2);abline(fir2)
+plot(sqrt(dist)~speed);fit3<-lm(sqrt(dist)~speed);summary(fit3);abline(fit3)
+
+##5. state.x77데이터에서 자살률에 대해 회귀분석을 실시하려고 한다. 모형의 타당성을 분석하고, 모든 변수를 사용한 모형과 유의미한 변수만 사용한 모형에 대해 아노바 분석과 AIC값을 비교하라
+class(state.x77)
+attributes(state.x77)
+states<-data.frame(state.x77[,c("Income","Illiteracy","Murder","Frost")])
+head(states)
+library(psych)
+cor.plot(state.x77)
+fir<-lm(Murder~Income+Illiteracy+Frost)
+summary(fit)
+library(car)
+durbinWatsonTest(fit)
+states2<-data.frame(state.x77[,c("Population","Income","Illiteracy","Murder","Frost")])
+op<-par(mforw=c(2,2))
+plot(fit2)
+par(op)
+outlierTest(fit2)
+qqplot(fit2, labels=row.names(states2),simulate=T)
+rownames(states2)
+anova(fit, fit2)
+AIC(fit,fit2)
