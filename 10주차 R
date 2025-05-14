@@ -1,11 +1,15 @@
 ##1. tree데이터의 변수간 상관관계를 분석하고 상관관계가 가장 높은 두 변수를 찾아라.
+#산점도/선형회귀직선
 plot(trees$Girth, trees$Height)
 fit<-lm(trees$Height~trees$Girth, data=trees)
 plot(trees$Girth~trees$Height)
 abline(fit)
 pairs(trees)
+#상관계수
 cor(trees)
+#공분산
 cov(trees)
+#상관관계 검정하기
 cor.test(trees$Girth, trees$Height)##cor=0.967
 cor.test(trees$Girth, trees$Volume)##cor=0.519
 
@@ -24,8 +28,10 @@ library(psych)
 describe(cars)
 #정규성 검정
 hist(cars$dist)
+#qq 플롯
 qqnorm(cars$dist)
 qqline(cars$dist, col='red')
+#shapir-wilk 테스트
 shapiro.test(cars$dist)
 #로그변환
 plot(log(dist)~speed);fit2<-lm(log(dist)~speed);summary(fit2);abline(fir2)
@@ -34,11 +40,12 @@ plot(sqrt(dist)~speed);fit3<-lm(sqrt(dist)~speed);summary(fit3);abline(fit3)
 ##5. state.x77데이터에서 자살률에 대해 회귀분석을 실시하려고 한다. 모형의 타당성을 분석하고, 모든 변수를 사용한 모형과 유의미한 변수만 사용한 모형에 대해 아노바 분석과 AIC값을 비교하라
 class(state.x77)
 attributes(state.x77)
+#자살률, 연봉, 문맹률, 인구만 선정하여 프레임 구성
 states<-data.frame(state.x77[,c("Income","Illiteracy","Murder","Frost")])
 head(states)
 library(psych)
 cor.plot(state.x77)
-fir<-lm(Murder~Income+Illiteracy+Frost)
+fit<-lm(Murder~Income+Illiteracy+Frost)
 summary(fit)
 library(car)
 durbinWatsonTest(fit)
