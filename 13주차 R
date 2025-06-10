@@ -1,0 +1,4 @@
+library(carData)
+data("TitanicSurvival")
+model <- glm(survived ~ age + sex + passengerClass, data = TitanicSurvival, family = "binomial")
+summary(model)
