@@ -1,0 +1,70 @@
+##1. MASS 패키지에 있는 Cars93 데이터셋의 Wheelbase 변수에 대해서 평균 값에서 표준편차의 1.5배, 2배, 2.5 배 또는 3배를 더하거나 뺀 값들의 구간 내의 데이터들의 평균을 각각 구한 후에 원래의 데이터 평균에서 QOTdmf Eo 차이들의 합을 출력하라. 단 소수점 다섯째자리에서 반올림하라. 
+<코드>
+library(MASS)
+data(Cars93)
+# Wheelbase 변수 추출
+wb <- Cars93$Wheelbase
+# 평균과 표준편차 계산
+mu <- mean(wb, na.rm = TRUE)
+sigma <- sd(wb, na.rm = TRUE)
+# 기준 배수 설정
+factors <- c(1.5, 2, 2.5, 3)
+means <- numeric(length(factors))
+# 각 배수마다 평균 계산
+for (i in seq_along(factors)) {
+  lower <- mu - sigma * factors[i]
+  upper <- mu + sigma * factors[i]
+  subset <- wb[wb >= lower & wb <= upper]
+  means[i] <- mean(subset, na.rm = TRUE)
+}
+# 원래 평균과의 차이 제곱합
+diffs_squared <- (means - mu)^2
+sum_of_squares <- sum(diffs_squared)
+
+# 결과 출력 (소수점 다섯째 자리까지)
+round(sum_of_squares, 5)
+<결과 해석>
+
+##2. MASS 패키지에 있는 Cars93 데이터셋의 Length 변수에 대해서 순위를 부여한 후, 1위부터 30위까지 값들의 표준편차를 구하고, 소수점 셋째자리까지 반올림하여 나타내어라.(단, 동점은 동일한 순위를 부여하되 평균내어 등수를 산정하여 최속값을 1위로 함.)
+<코드>
+library(MASS)
+data(Cars93)
+# Length 변수 추출
+lengths <- Cars93$Length
+# 순위 부여 (작은 값이 1위, 동점자는 평균 순위)
+ranks <- rank(lengths, ties.method = "average")
+# 상위 30위에 해당하는 Length 값 추출
+top30 <- lengths[order(ranks)][1:30]
+# 표준편차 계산
+result <- sd(top30)
+# 소수점 셋째 자리까지 반올림
+round(result, 3)
+<결과 해석>
+
+3. MASS 패키지에 있는 Cars93 데이터셋을 이용하여 (1) Price변수의 결측치를 평균으로 대체하고 (2) Price변수가 Max.Price와 Min.Price의 평균보다 작은 데이터만 추출해 산출된 (3) Origin변수의 그룹별 Price의 합계와 (4) Price변수의 결측치를 중앙값으로 대체하고 (5) Price 변수가 Min.Price변수의 제 3 사분위수보다 작은 값들을 추출해 산출된 (6) Origin 변수별 Price의  합계를 (7) Origin 그룹별 합한 후 (8) 큰 값을 출력하라. (단, 소수점 이하는 절삭하라. )
+<코드>
+library(MASS)
+data(Cars93)
+#결측치 평균으로 대체
+price_mean <- mean(Cars93$Price, na.rm = TRUE)
+df_mean <- Cars93
+df_mean$Price[is.na(df_mean$Price)] <- price_mean
+#평균보다 작은 데이터만 추출
+cond1 <- df_mean$Price < (df_mean$Min.Price + df_mean$Max.Price) / 2
+df_mean_filtered <- df_mean[cond1, ]
+#rigin 그룹별 Price 합계
+sum_by_origin_mean <- aggregate(Price ~ Origin, data = df_mean_filtered, sum)
+#결측치 중앙값으로 대체
+price_median <- median(Cars93$Price, na.rm = TRUE)
+df_median <- Cars93
+df_median$Price[is.na(df_median$Price)] <- price_median
+#Min.Price의 3사분위수보다 작은 Price 값 추출
+q3 <- quantile(df_median$Min.Price, 0.75)
+df_median_filtered <- df_median[df_median$Price < q3, ]
+#Origin 그룹별 Price 합계
+sum_by_origin_median <- aggregate(Price ~ Origin, data = df_median_filtered, sum)
+#합계 중 더 큰 값
+result <- max(sum_by_origin_median$Price)
+#소수점 절삭
+floor(result)
+<결과 해석>
